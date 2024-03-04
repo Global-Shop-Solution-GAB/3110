@@ -1,0 +1,591 @@
+Program.Sub.ScreenSU.Start
+gui.Form1..create
+gui.Form1..caption("Select File")
+gui.Form1..size(4290,2565)
+gui.Form1..minx(0)
+gui.Form1..miny(0)
+gui.Form1..position(0,0)
+gui.Form1..event(unload,form1_unload)
+gui.Form1..alwaysontop(False)
+gui.Form1..fontname("Arial")
+gui.Form1..fontsize(8)
+gui.Form1..forecolor(0)
+gui.Form1..fontstyle(,,,,)
+gui.Form1..BackColor(-2147483633)
+gui.Form1..controlbox(True)
+gui.Form1..maxbutton(True)
+gui.Form1..minbutton(True)
+gui.Form1..mousepointer(0)
+gui.Form1..moveable(True)
+gui.Form1..sizeable(False)
+gui.Form1..ShowInTaskBar(True)
+gui.Form1..titlebar(True)
+gui.Form1.lbl1.create(label,"Upload File",True,1935,255,1,200,200,True,0,Arial,8,-2147483633,0)
+gui.Form1.lbl1.defaultvalue("")
+gui.Form1.lbl1.controlgroup(0)
+gui.Form1.txtUplFile.create(textbox,"",True,3105,300,0,200,400,False,0,Arial,8,-2147483643,1)
+gui.Form1.txtUplFile.defaultvalue("")
+gui.Form1.txtUplFile.controlgroup(0)
+gui.Form1.cmdBrwsFile.create(button)
+gui.Form1.cmdBrwsFile.caption("^")
+gui.Form1.cmdBrwsFile.visible(True)
+gui.Form1.cmdBrwsFile.size(375,375)
+gui.Form1.cmdBrwsFile.zorder(0)
+gui.Form1.cmdBrwsFile.position(3445,390)
+gui.Form1.cmdBrwsFile.enabled(True)
+gui.Form1.cmdBrwsFile.fontname("Arial")
+gui.Form1.cmdBrwsFile.fontsize(8)
+gui.Form1.cmdBrwsFile.event(click,cmdbrwsfile_click)
+gui.Form1.cmdBrwsFile.defaultvalue("")
+gui.Form1.cmdBrwsFile.controlgroup(0)
+gui.Form1.txtSaveFile.create(textbox,"",True,3120,300,0,200,1000,False,0,Arial,8,-2147483643,1)
+gui.Form1.txtSaveFile.defaultvalue("")
+gui.Form1.txtSaveFile.controlgroup(0)
+gui.Form1.lbl2.create(label,"Save File To",True,1935,255,1,200,800,True,0,Arial,8,-2147483633,0)
+gui.Form1.lbl2.defaultvalue("")
+gui.Form1.lbl2.controlgroup(0)
+gui.Form1.cmdBrwsSave.create(button)
+gui.Form1.cmdBrwsSave.caption("^")
+gui.Form1.cmdBrwsSave.visible(True)
+gui.Form1.cmdBrwsSave.size(405,375)
+gui.Form1.cmdBrwsSave.zorder(0)
+gui.Form1.cmdBrwsSave.position(3400,1000)
+gui.Form1.cmdBrwsSave.enabled(True)
+gui.Form1.cmdBrwsSave.fontname("Arial")
+gui.Form1.cmdBrwsSave.fontsize(8)
+gui.Form1.cmdBrwsSave.event(click,cmdbrwssave_click)
+gui.Form1.cmdBrwsSave.defaultvalue("")
+gui.Form1.cmdBrwsSave.controlgroup(0)
+gui.Form1.cmdUpload.create(button)
+gui.Form1.cmdUpload.caption("Ok")
+gui.Form1.cmdUpload.visible(True)
+gui.Form1.cmdUpload.size(855,375)
+gui.Form1.cmdUpload.zorder(0)
+gui.Form1.cmdUpload.position(200,1400)
+gui.Form1.cmdUpload.enabled(True)
+gui.Form1.cmdUpload.fontname("Arial")
+gui.Form1.cmdUpload.fontsize(8)
+gui.Form1.cmdUpload.event(click,cmdupload_click)
+gui.Form1.cmdUpload.defaultvalue("")
+gui.Form1.cmdUpload.controlgroup(0)
+gui.Form1.cmdClear.create(button)
+gui.Form1.cmdClear.caption("Clear")
+gui.Form1.cmdClear.visible(True)
+gui.Form1.cmdClear.size(855,375)
+gui.Form1.cmdClear.zorder(0)
+gui.Form1.cmdClear.position(1300,1400)
+gui.Form1.cmdClear.enabled(True)
+gui.Form1.cmdClear.fontname("Arial")
+gui.Form1.cmdClear.fontsize(8)
+gui.Form1.cmdClear.event(click,cmdclear_click)
+gui.Form1.cmdClear.defaultvalue("")
+gui.Form1.cmdClear.controlgroup(0)
+
+
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+
+Variable.Global.sFileName.Declare(String)
+Program.Sub.Preflight.End
+
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+F.Intrinsic.Control.If(V.Caller.Hook,=,11560)
+	V.Passed.000203.Set("Import Lines")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+
+
+F.ODBC.Connection!con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+Gui.Form1..Show
+
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3110_CRS_SO_UPL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Main.End
+
+
+program.sub.form1_unload.start
+F.Intrinsic.Control.End
+
+program.sub.form1_unload.end
+
+
+program.sub.cmdbrwsfile_click.start
+F.Intrinsic.Control.SetErrorHandler("cmdbrwsfile_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.sFile.Declare(String)
+V.Local.iRow.Declare(Long)
+V.Local.sRow.Declare(String)
+V.Local.i.Declare(Long)
+V.Local.sCol.Declare(String)
+V.Local.sSQL.Declare(String)
+V.Local.sSO.Declare(String)
+V.Local.sMsg.Declare(String)
+V.Local.sRev.Declare(String)
+V.Local.sPart.Declare(String)
+V.Local.sPartRev.Declare(String)
+V.Local.sText.Declare(String)
+V.Local.sTemp.Declare(String)
+V.Local.sLine.Declare(String)
+V.Local.fLBS.Declare(Float)
+V.Local.sPath.Declare(String)
+V.Local.bExists.Declare(Boolean)
+V.Local.sCust.Declare(String)
+V.Local.iUB.Declare(Long)
+V.Local.iVal.Declare(Long)
+V.Local.iLen.Declare(Long)
+
+
+F.Intrinsic.String.LPad(V.Passed.000003,"0",7,V.Local.sSO)
+
+F.Intrinsic.UI.ShowOpenFileDialog("","xls|*.xls",,V.Local.sFile)
+F.Intrinsic.Control.If(V.Local.sFile,=,"***CANCEL***")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+Gui.Form1.txtUplFile.Text(V.Local.sFile)
+V.Global.sFileName.Set(V.Local.sFile)
+
+
+
+
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdbrwsfile_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3110_CRS_SO_UPL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+program.sub.cmdbrwsfile_click.end
+
+
+program.sub.cmdbrwssave_click.start
+F.Intrinsic.Control.SetErrorHandler("cmdbrwssave_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sFile.Declare(String)
+
+
+
+F.Intrinsic.UI.ShowSaveFileDialog(V.passed.000003,"("",".xls)|*.xls",,V.Local.sFile)
+F.Intrinsic.Control.If(V.Local.sFile,=,"***CANCEL***")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+Gui.Form1.txtSaveFile.Text(V.Local.sFile)
+
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdbrwssave_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3110_CRS_SO_UPL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+program.sub.cmdbrwssave_click.end
+
+
+program.sub.cmdclear_click.start
+F.Intrinsic.Control.SetErrorHandler("cmdclear_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+Gui.Form1.txtSaveFile.Text("")
+Gui.Form1.txtUplFile.Text("")
+F.Intrinsic.Control.ExitSub
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdclear_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3110_CRS_SO_UPL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+program.sub.cmdclear_click.end
+
+
+program.sub.cmdupload_click.start
+F.Intrinsic.Control.SetErrorHandler("cmdupload_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.sFile.Declare(String)
+V.Local.iRow.Declare(Long)
+V.Local.sRow.Declare(String)
+V.Local.i.Declare(Long)
+V.Local.sCol.Declare(String)
+V.Local.sSQL.Declare(String)
+V.Local.sSO.Declare(String)
+V.Local.sMsg.Declare(String)
+V.Local.sRev.Declare(String)
+V.Local.sPart.Declare(String)
+V.Local.sPartRev.Declare(String)
+V.Local.sText.Declare(String)
+V.Local.sTemp.Declare(String)
+V.Local.sLine.Declare(String)
+V.Local.fLBS.Declare(Float)
+V.Local.sPath.Declare(String)
+V.Local.bExists.Declare(Boolean)
+V.Local.sCust.Declare(String)
+V.Local.iUB.Declare(Long)
+V.Local.iVal.Declare(Long)
+V.Local.iLen.Declare(Long)
+V.Local.sDesc.Declare(String)
+V.Local.sAltDesc.Declare(String)
+V.Local.sAltDesc2.Declare(String)
+V.Local.sVendor.Declare(String)
+V.Local.sQty.Declare(String)
+V.Local.sPrice.Declare(String)
+V.Local.sCost.Declare(String)
+V.Local.sU1.Declare(String)
+V.Local.sU2.Declare(String)
+V.Local.sU3.Declare(String)
+V.Local.sU4.Declare(String)
+V.Local.sU5.Declare(String)
+V.Local.sUM.Declare(String)
+V.local.iPrice.Declare(Float)
+V.Local.iQty.Declare(Float)
+V.Local.iExt.Declare(Float)
+V.Local.sExt.Declare(String)
+V.Local.iLine.Declare(Float)
+V.Local.iLine.Set(1)
+V.Local.sFile.Set(V.Global.sFileName)
+V.Local.sXFile.Declare(String)
+V.Local.sParam.Declare(String)
+V.Local.sPath2.Declare(String)
+V.Local.sUser.Declare(String)
+V.Local.sCustomer.Declare(String)
+V.Local.sPL.Declare(String)
+V.Local.sTempFull.Declare(String)
+V.Local.sUplFile.Declare(String)
+V.Local.sSaveFile.Declare(String)
+V.Local.iPart.Declare(Float)
+V.Local.iRet.Declare(Long)
+V.Local.fRet.Declare(Float)
+V.Local.iTextSeq.Declare(Long)
+V.Local.sTextSeq.Declare(String)
+V.Local.iText.Declare(Float)
+V.Local.sTextRet.Declare(String)
+
+
+V.Local.sUplFile.set(V.Screen.Form1!txtUplFile.Text)
+V.Local.sSaveFile.Set(V.Screen.Form1!txtSaveFile.Text)
+'
+'F.Intrinsic.Debug.InvokeDebugger
+
+
+F.Intrinsic.Control.If(V.Screen.Form1!txtSaveFile.Text,=,"")
+	F.Intrinsic.UI.Msgbox("Select a location to save file","")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.ElseIf(V.Screen.Form1!txtUplFile.Text,=,"")
+	F.Intrinsic.UI.Msgbox("Select a file to upload","")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.String.LPad(V.Passed.000003,0,7,V.Local.sSO)
+
+
+F.Intrinsic.String.Concat("Select * from V_ORDER_HEADER Where ORDER_NO = '",V.Local.sSO,"'",V.local.ssql)
+F.ODBC.Connection!con.OpenRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,True)
+	F.Intrinsic.String.Concat("Sales Order ",V.Local.sSO," not found, order must be saved first.",V.Local.sMsg)
+	F.Intrinsic.UI.Msgbox(V.Local.sMsg,"Order Not Saved")
+	F.ODBC.con!rst.Close
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.Else
+	F.ODBC.con!rst.Close
+	F.Intrinsic.String.Concat("select * from v_order_lines where order_no ='",V.Local.sSO,"'",V.Local.sSQL)
+	F.ODBC.Connection!con.OpenRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,<>,True)
+		F.Intrinsic.UI.Msgbox("Sales Order Has Existing Lines, Must be Sales Order with No Lines","Lines Exist")
+		F.ODBC.con!rst.Close
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.Else
+		F.ODBC.con!rst.Close
+		Gui.Form1..Visible(false)
+		F.Intrinsic.UI.InvokeWaitDialog("Loading Upload File....Please Wait","")
+		
+		
+		'Open Excel spreadsheet
+		F.Automation.MSExcel.CreateAppObject("MSExcel")
+		F.Automation.MSExcel.OpenWorkbook("MSExcel","Workbook",V.Local.sFile)
+		F.Automation.MSExcel.OpenWorksheet("Workbook","Worksheet",1)
+		F.Automation.MSExcel.RowCount("Worksheet",V.Local.iRow)
+		F.Automation.MSExcel.DestroyAllObjects("MSExcel","Workbook","Worksheet")
+		F.Automation.MSExcel.ReadSpreadsheet(V.Local.sFile,20,V.Local.iRow,V.Local.sFile)
+		F.Intrinsic.String.Split(V.Local.sFile,"$!$",V.Local.sRow)
+		F.Intrinsic.Control.For(V.Local.i,7,V.Local.sRow.UBound,1)
+			F.Intrinsic.UI.ChangeWaitStatus("Generating Sales Order Lines...",V.Local.i,V.Local.sRow.LBound,V.Local.sRow.UBound)
+			F.Intrinsic.String.Split(V.Local.sRow(v.Local.i),"*!*",V.Local.sCol)
+			'skip line if column E field is blank
+			F.Intrinsic.Control.If(V.Local.sCol(4).Trim,<>,"")
+				'if part is made by CRS, Inc and part does not exist then create manufactured part and update alt cost field
+				F.Intrinsic.Control.If(V.Local.sCol(3).trim,=,"CRS, Inc")
+					F.Intrinsic.string.Len(V.Local.sCol(4).Trim,V.Local.iLen)
+					F.Intrinsic.Control.If(V.Local.iLen,<=,30)
+						F.Intrinsic.String.RPad(V.Local.sCol(4).Trim," ",30,V.Local.sPartRev)
+					F.Intrinsic.Control.ElseIf(V.Local.sCol(4).Trim,>,30)
+						F.Intrinsic.String.Left(V.Local.sCol(4).Trim,30,V.Local.sPartRev)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.Concat("Select max(part) from v_INVENTORY_MSTR where  isnumeric(part)=1 and description = '",V.Local.sPartRev,"'",V.Local.sSQL)
+					F.ODBC.Connection!con.OpenRecordsetRO("rst",V.Local.sSQL)
+					F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,True)
+						F.ODBC.con!rst.Close
+						F.Intrinsic.String.Concat("select max(part) as part from v_inventory_mstr where product_line = 'FG'  and isnumeric(part)=1",,V.Local.sSQL)
+						F.ODBC.Connection!con.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+						F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,<>,True)
+							F.Intrinsic.Math.ConvertToFloat(V.ODBC.con!rst.FieldVal!PART,V.Local.iPart)
+							F.ODBC.con!rst.Close
+							F.Intrinsic.Math.Add(V.Local.iPart,1,V.Local.iPart)
+							F.Intrinsic.String.ConvertToString(V.Local.iPart,V.Local.sPart)
+							F.Intrinsic.String.LPad(V.Local.sPart,"0",20,V.Local.sPart)
+							F.Intrinsic.String.UCase(V.Local.sCol(2).Trim,V.Local.sUM)
+							V.Local.sU2.Set("Mfg to Job")
+							F.Intrinsic.String.Left(V.Local.sCol(5),30,V.Local.sDesc)
+							'create part if it does not exist and update alt cost
+							F.Global.Inventory.CreatePart(V.Local.sPart,V.Local.sUM,V.Local.sPartRev,,"FG","M",V.Local.sDesc,,V.Local.sCol(6).Trim,"NOMAINT")
+							F.Intrinsic.String.Concat("update INVENTORY_MSTR set AMT_ALT_COST = ",V.Local.sCol(10)," where part = '",V.Local.sPart,"'",V.Local.sSQL)
+							F.ODBC.Connection!con.Execute(V.Local.sSQL)
+						F.Intrinsic.Control.Else
+							V.Local.iPart.Set(0)
+							F.Intrinsic.String.ConvertToString(V.Local.iPart,V.Local.sPart)
+							F.Intrinsic.String.LPad(V.Local.sPart,"0",20,V.Local.sPart)
+							F.Intrinsic.String.UCase(V.Local.sCol(2).Trim,V.Local.sUM)
+							V.Local.sU2.Set("Mfg to Job")
+							F.Intrinsic.String.Left(V.Local.sCol(5),30,V.Local.sDesc)
+							'create part if it does not exist and update alt cost
+							F.Global.Inventory.CreatePart(V.Local.sPart,V.Local.sUM,V.Local.sPartRev,,"FG","M",V.Local.sDesc,,V.Local.sCol(6).Trim,"NOMAINT")
+							F.Intrinsic.String.Concat("update INVENTORY_MSTR set AMT_ALT_COST = ",V.Local.sCol(10).Trim," where part = '",V.Local.sPart,"'",V.Local.sSQL)
+							F.ODBC.Connection!con.Execute(V.Local.sSQL)
+						F.Intrinsic.Control.EndIf
+
+					'if Part is CRS,Inc and part does exist create incremented part# and update alt cost same as above.	
+					F.Intrinsic.Control.Else
+						F.ODBC.con!rst.Close
+						F.Intrinsic.String.Concat("select max(part) as part from v_inventory_mstr where product_line = 'FG'  and isnumeric(part)=1",,V.Local.sSQL)
+						F.ODBC.Connection!con.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+						F.Intrinsic.Math.ConvertToFloat(V.ODBC.con!rst.FieldVal!PART,V.Local.iPart)
+						F.ODBC.con!rst.Close
+						F.Intrinsic.Math.Add(V.Local.iPart,1,V.Local.iPart)
+						F.Intrinsic.String.ConvertToString(V.Local.iPart,V.Local.sPart)
+						F.Intrinsic.String.LPad(V.Local.sPart,"0",20,V.Local.sPart)
+						F.Intrinsic.String.UCase(V.Local.sCol(2).Trim,V.Local.sUM)
+						V.Local.sU2.Set("Mfg to Job")
+						F.Intrinsic.String.Left(V.Local.sCol(5),30,V.Local.sDesc)
+						'create part if it does not exist and update alt cost
+						F.Global.Inventory.CreatePart(V.Local.sPart,V.Local.sUM,V.Local.sPartRev,,"FG","M",V.Local.sDesc,,V.Local.sCol(6).Trim,"NOMAINT")
+						F.Intrinsic.String.Concat("update INVENTORY_MSTR set AMT_ALT_COST = ",V.Local.sCol(10).Trim," where part = '",V.Local.sPart,"'",V.Local.sSQL)
+						F.ODBC.Connection!con.Execute(V.Local.sSQL)
+						
+	'test
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.RPad(V.Local.sPartRev," ",30,V.Local.sDesc)
+					F.Intrinsic.String.RPad(V.Local.sPartRev," ",30,V.Local.sU1)
+					F.Intrinsic.String.Left(V.Local.sCol(5),30,V.Local.sU3)
+					F.Intrinsic.String.Rpad(V.Local.sPart," ",38,V.Local.sPartRev)
+					V.Local.sPL.Set("FG")
+					F.Intrinsic.String.UCase(V.Local.sCol(2).Trim,V.Local.sUM)
+'if part is NOT "CRS, Inc" part it is purchased part and create part if it does not exits and update alt cost and vendorname as the number from column Q
+				F.Intrinsic.Control.Else
+					F.Intrinsic.string.Len(V.Local.sCol(4).Trim,V.Local.iLen)
+					F.Intrinsic.Control.If(V.Local.iLen,<=,20)
+						F.Intrinsic.String.RPad(V.Local.sCol(4).Trim," ",20,V.Local.sPartRev)
+					F.Intrinsic.Control.ElseIf(V.Local.sCol(4).Trim,>,20)
+						F.Intrinsic.String.Left(V.Local.sCol(4).Trim,20,V.Local.sPartRev)
+					F.Intrinsic.Control.EndIf
+		
+					F.Intrinsic.String.Concat("Select part from INVENTORY_MSTR where part = '",V.Local.sPartRev,"'",V.Local.sSQL)
+					F.ODBC.Connection!con.OpenRecordsetRO("rst",V.Local.sSQL)
+					F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,True)
+						F.ODBC.con!rst.Close
+						F.Intrinsic.String.UCase(V.Local.sCol(2).Trim,V.Local.sUM)
+						V.Local.sU2.Set("Purchase to Job")
+						F.Intrinsic.String.Left(V.Local.sCol(5),30,V.Local.sDesc)
+						'create part and update alt cost and vendor name as number from table
+						F.Global.Inventory.CreatePart(V.Local.sPartRev,V.Local.sUM,V.Local.sDesc,,"BO","P",,,V.Local.sCol(6).Trim,"NOMAINT")
+						F.Intrinsic.String.Concat("update INVENTORY_MSTR set AMT_ALT_COST = ",V.Local.sCol(10).trim," where part = '",V.local.sPartRev,"'",V.Local.sSQL)
+						F.ODBC.Connection!con.Execute(V.Local.sSQL)
+						F.Intrinsic.String.Concat("update INVENTORY_MST2 set NAME_VENDOR = '",V.Local.sCol(16).Trim,"' where part = '",V.Local.sPartRev,"'",V.Local.sSQL)
+						F.ODBC.Connection!con.Execute(V.Local.sSQL)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Left(V.Local.sCol(5),30,V.Local.sDesc)
+						F.ODBC.con!rst.Close
+						V.Local.sU2.Set("Purchase to Job")
+
+					F.Intrinsic.Control.EndIf
+							
+
+					F.Intrinsic.String.RPad(V.Local.sDesc," ",30,V.Local.sDesc)
+					F.Intrinsic.String.RPad(V.Local.sPartRev," ",30,V.Local.sU1)
+					F.Intrinsic.String.Rpad(V.Local.sPartRev," ",38,V.Local.sPartRev)
+					F.Intrinsic.String.Left(V.Local.sCol(5),30,V.Local.sU3)
+					V.Local.sPL.Set("JM")
+					F.Intrinsic.String.UCase(V.Local.sCol(2).Trim,V.Local.sUM)
+
+				F.Intrinsic.Control.EndIf
+				F.Intrinsic.String.LPad(V.Local.iLine,"0",3,V.Local.sLine)
+				F.Intrinsic.String.RPad(V.Local.sLine,"0",4,V.Local.sLine)
+'if price = 0 insert column F into extra text for line item of order in order_text table
+				V.Local.iText.Set(1)
+				V.Local.iTextSeq.Set(0)
+				F.Intrinsic.Control.If(V.Local.sCol(6),=,0)
+					F.Intrinsic.String.Replace(V.Local.sCol(5).Trim,"'","ft ",V.Local.sText)
+					f.Intrinsic.String.Replace(v.Local.sText.Trim,v.ASCII.34,"in ",v.Local.sText)
+					F.Intrinsic.String.Len(V.Local.sText,V.Local.iRet)
+					F.Intrinsic.Control.If(V.Local.iRet,>,30)
+						F.Intrinsic.Math.ConvertToFloat(V.Local.iRet,V.Local.fRet)
+						F.Intrinsic.Math.Div(V.Local.fRet,30,V.Local.fRet)
+						F.Intrinsic.Math.ConvertToLong(V.Local.fRet,V.Local.iRet)
+						F.Intrinsic.Control.For(V.Local.iTextSeq,0,V.Local.iRet,1)
+							F.Intrinsic.String.ConvertToString(V.Local.iTextSeq,V.Local.sTextSeq)
+							F.Intrinsic.String.LPad(V.Local.sTextSeq,"0",3,V.Local.sTextSeq)
+							F.Intrinsic.String.Mid(V.Local.sText.Trim,V.Local.iText,30,V.Local.sTextRet)
+							F.Intrinsic.String.Concat("insert into order_text values('",V.Local.sSO,"','0000','",V.Local.sLine,"','','','','','','",V.Local.sTextSeq,"','",V.Local.sTextRet,"','','M','')",V.Local.sSQL)
+							F.ODBC.Connection!con.Execute(V.Local.sSQL)
+							F.Intrinsic.Math.ConvertToFloat(V.Local.iText,V.Local.fRet)
+							F.Intrinsic.Math.Add(V.Local.fRet,30,V.Local.fRet)
+							F.Intrinsic.Math.ConvertToLong(V.Local.fRet,V.Local.iText)
+							F.Intrinsic.Control.Next(V.Local.iTextSeq)
+					F.Intrinsic.Control.Else
+						V.Local.iTextSeq.Set(0)
+						F.Intrinsic.String.ConvertToString(V.Local.iTextSeq,V.Local.sTextSeq)
+						F.Intrinsic.String.LPad(V.Local.sTextSeq,"0",3,V.Local.sTextSeq)
+						F.Intrinsic.String.Concat("insert into order_text values('",V.Local.sSO,"','0000','",V.Local.sLine,"','','','','','','",V.Local.sTextSeq,"','",V.Local.sText.trim,"','','M','')",V.Local.sSQL)
+						F.ODBC.Connection!con.Execute(V.Local.sSQL)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+	'build line for upload file													
+				F.Intrinsic.String.LPad(V.Local.iLine,"0",3,V.Local.sLine)
+				
+				F.Intrinsic.String.LPad(V.Passed.000006,"0",7,V.Local.sCustomer)
+				F.Intrinsic.String.Concat("O",V.Local.sCustomer,V.Local.sSO,V.Local.sTemp)
+				F.Intrinsic.String.Concat(V.Local.sTemp,V.Local.sPartRev,V.Local.sTemp)
+				F.Intrinsic.String.RPad(V.Local.sTemp," ",55,V.Local.sTemp)
+				F.Intrinsic.String.Concat(V.Local.sTemp,V.Local.sPL,V.Local.sTemp)
+				F.Intrinsic.String.RPad(V.Local.sTemp," ",60,V.Local.sTemp)
+				F.Intrinsic.String.Concat(V.Local.sTemp,V.Local.sDesc,V.Local.sTemp)
+				F.Intrinsic.String.Concat(V.Local.sTemp,V.Local.sLine,"S",V.Local.sTemp)
+				F.Intrinsic.String.LPad(V.Local.sCol(1).Trim,"0",9,V.Local.sQty)
+				F.Intrinsic.String.RPad(V.Local.sQty,"0",13,V.Local.sQty)
+				F.Intrinsic.String.Concat(V.Local.sTemp,V.Local.sQty,V.Local.sTemp)
+				F.Intrinsic.String.RPad(V.Local.sTemp," ",117,V.Local.sTemp)
+				F.Intrinsic.String.LPad(V.Local.sCol(6).Trim,"0",10,V.Local.sPrice)
+				F.Intrinsic.String.RPad(V.Local.sPrice,"0",16,V.Local.sPrice)
+				F.Intrinsic.String.Concat(V.Local.sTemp,V.Local.sPrice,V.Local.sTemp)
+				F.Intrinsic.String.RPad(V.Local.sU2," ",30,V.Local.sU2)
+				F.Intrinsic.String.RPad(V.Local.sU3," ",30,V.Local.sU3)
+				F.Intrinsic.String.Mid(V.Local.sCol(5),31,30,V.Local.sU4)
+				F.Intrinsic.String.RPad(V.Local.sU4," ",30,V.Local.sU4)
+				F.Intrinsic.String.RPad(V.Local.sCol(0)," ",30,V.Local.sU5)
+				F.Intrinsic.String.Concat(V.Local.sTemp,V.Local.sU1,V.Local.sU2,V.Local.sU3,V.local.sU4,V.local.sU5,V.Local.sTemp)
+				F.Intrinsic.String.RPad(V.Local.sTemp," ",283,V.Local.sTemp)
+				F.Intrinsic.String.Concat(V.Local.stemp,V.Local.sUM,"1",V.Local.sTemp)
+
+
+
+				F.Intrinsic.String.Concat(V.local.sTempFull,V.local.sTemp,V.Ambient.NewLine,V.Local.sTempFull)
+
+
+
+				
+				F.Intrinsic.Math.Add(V.Local.iLine,1,V.Local.iLine)
+				
+				'test
+			F.Intrinsic.Control.EndIf
+			
+		F.Intrinsic.Control.Next(V.Local.i)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Concat("GABSALESUPLOAD",V.Caller.Terminal,V.Caller.CompanyCode,V.Global.sFileName)
+	
+F.Intrinsic.String.Concat(V.Caller.FilesDir,"\",V.Global.sFileName,V.Local.sPath)
+F.Intrinsic.File.Exists(V.Local.sPath,V.Local.bExists)
+F.Intrinsic.Control.If(V.Local.bExists,=,True)
+	F.Intrinsic.File.DeleteFile(V.Local.sPath)
+F.Intrinsic.Control.EndIf
+F.Intrinsic.File.String2File(V.Local.sPath,V.Local.sTempFull)
+'F.Intrinsic.Debug.Stop
+
+F.Intrinsic.Control.CallSub(Upload)
+'F.Intrinsic.Debug.Stop
+
+F.Intrinsic.file.CopyFile(V.Local.sUplFile,V.Local.sSaveFile)
+F.Intrinsic.UI.CloseWaitDialog
+F.Intrinsic.String.Concat(V.Local.sLine," Lines Uploaded Successfully to Order #",V.Local.sSO,V.Local.sTemp)
+F.Intrinsic.UI.Msgbox(V.Local.sTemp,"Upload Successful")
+
+F.Intrinsic.Control.CallSub(Form1_unload)
+			
+F.Intrinsic.Control.Label("cmdupload_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3110_CRS_SO_UPL.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(Form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+program.sub.cmdupload_click.end
+
+
+Program.Sub.Upload.Start
+V.Local.sParam.Declare(String)
+V.Local.sPath.Declare(String)
+V.Local.sTemp.Declare(String)
+
+V.Local.sParam.Set("")
+F.Intrinsic.String.Concat(V.Caller.FilesDir,"\",V.Global.sFileName,V.Local.sPath)
+F.Intrinsic.String.Rpad(Variable.Caller.User," ",8,Variable.Local.sTemp)
+F.Intrinsic.String.Concat(V.Local.sParam,V.Ambient.QuadQuote,Variable.Caller.CompanyCode,Variable.Local.sTemp,Variable.Local.sPath,V.Ambient.QuadQuote,Variable.Local.sParam)
+
+F.Intrinsic.UI.ChangeWaitStatus("Adding Sales Order Lines...")
+
+
+'F.Intrinsic.Debug.CallWrapperDebugEnable
+F.Intrinsic.Task.Launchgsssync("ORDADCMD","-c",Variable.Local.sParam)
+
+F.Intrinsic.Control.ExitSub
+
+
+Program.Sub.Upload.End
+
+
+Program.Sub.Comments.Start
+${$0$}$GCG_CRS_SO_UPL$}$SFF$}$6/18/2014
+Program.Sub.Comments.End
+
